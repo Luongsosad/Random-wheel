@@ -122,6 +122,19 @@ const questions: Question[] = [
     answer: "C",
   },
   {
+    id: 3,
+    title: "Gói 3",
+    prompt:
+      "Khi Lục Vân Tiên bị Trịnh Hâm hãm hại đẩy xuống sông, ai là người đã cứu vớt chàng?",
+    options: {
+      A: "Vợ chồng ông Ngư",
+      B: "Ông Tiều",
+      C: "Gia đình Quản quân",
+      D: "Võ Thể Loan",
+    },
+    answer: "A",
+  },
+  {
     id: 4,
     title: "Gói 4",
     prompt:
