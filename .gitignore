@@ -1,0 +1,7 @@
+.next
+node_modules
+out
+dist
+tmp
+.env*.local
+dev-server.log
