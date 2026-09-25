@@ -438,14 +438,14 @@ export default function Home() {
                         onClick={() => pickQuestion(question)}
                         title={
                           !question
-                            ? "Chưa có dữ liệu câu hỏi số 3"
+                            ? "Chưa có dữ liệu câu hỏi"
                             : isOpened
                               ? "Gói này đã được mở"
                               : question.prompt
                         }
                       >
                         <span>Gói {slotNumber}</span>
-                        <strong>{question ? (isOpened ? "Đã mở" : "Mở câu hỏi") : "Thiếu câu 3"}</strong>
+                        <strong>{question ? (isOpened ? "Đã mở" : "Mở câu hỏi") : "Chưa nhập"}</strong>
                       </button>
                     );
                   })}
