@@ -124,15 +124,14 @@ const questions: Question[] = [
   {
     id: 3,
     title: "Gói 3",
-    prompt:
-      "Khi Lục Vân Tiên bị Trịnh Hâm hãm hại đẩy xuống sông, ai là người đã cứu vớt chàng?",
+    prompt: "Thủ tướng Phạm Văn Đồng đã từng so sánh Nguyễn Đình Chiểu với?",
     options: {
-      A: "Vợ chồng ông Ngư",
-      B: "Ông Tiều",
-      C: "Gia đình Quản quân",
-      D: "Võ Thể Loan",
+      A: "Vầng trăng",
+      B: "Ngôi sao",
+      C: "Ánh mặt trời",
+      D: "Dải ngân hà",
     },
-    answer: "A",
+    answer: "B",
   },
   {
     id: 4,
