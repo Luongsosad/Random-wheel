@@ -439,8 +439,10 @@ export default function Home() {
                         aria-label={`Hộp quà ${String(slotNumber).padStart(2, "0")}: ${!question ? "chưa có câu hỏi" : isOpened ? "đã mở" : "chọn để mở câu hỏi"}`}
                       >
                         <span className="gift-scene" aria-hidden="true">
-                          <span className="gift-bow"><span /><span /></span>
-                          <span className="gift-lid"><span className="gift-lid-ribbon" /></span>
+                          <span className="gift-lid">
+                            <span className="gift-lid-ribbon" />
+                            <span className="gift-bow"><span /><span /></span>
+                          </span>
                           <span className="gift-box">
                             <span className="gift-ribbon" />
                             <span className="package-number">{String(slotNumber).padStart(2, "0")}</span>

@@ -1204,7 +1204,7 @@ button:disabled {
   box-shadow: 0 4px 3px rgba(30, 22, 54, 0.27), inset 0 2px 0 rgba(255, 255, 255, 0.4);
   height: 23px;
   left: 1%;
-  overflow: hidden;
+  overflow: visible;
   position: absolute;
   top: 20px;
   transform-origin: 90% 100%;
@@ -1217,7 +1217,7 @@ button:disabled {
   height: 34px;
   left: 50%;
   position: absolute;
-  top: -10px;
+  top: -30px;
   transform: translateX(-50%);
   width: 70px;
   z-index: 3;
@@ -1277,7 +1277,6 @@ button:disabled {
 
 .question-card.opened .gift-scene { filter: grayscale(0.55) brightness(0.85); }
 .question-card.opened .gift-lid { transform: translate(5px, -8px) rotate(12deg); }
-.question-card.opened .gift-bow { transform: translate(-43%, 12px) rotate(12deg); }
 .question-card.opened .package-number { color: #3c3159; }
 .question-card.opened .package-state { color: #d7e1ed; }
 
