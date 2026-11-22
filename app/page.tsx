@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, RotateCcw, RotateCw, Shuffle } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, CheckCircle2, RotateCcw, RotateCw, Shuffle, Sparkles, XCircle } from "lucide-react";
 import { useState } from "react";
 
 type WheelEntry = {
@@ -394,16 +394,16 @@ export default function Home() {
       </section>
 
       {selectedEntry && !isSpinning ? (
-        <section className="game-overlay" aria-labelledby="question-title">
-          <div className={`overlay-card ${selectedQuestion ? "question-mode" : ""}`}>
+        <section className="game-overlay" aria-label="Vòng câu hỏi">
+          <div className={`overlay-card ${selectedQuestion ? "question-mode" : "package-mode"}`}>
             <div className="overlay-header">
               <div>
-                <p className="eyebrow">Pháp danh được chọn</p>
+                <p className="eyebrow">Người được chọn</p>
                 <h2>{selectedEntry.name}</h2>
               </div>
               <button className="ghost-action compact" onClick={resetRound}>
                 <RotateCcw size={19} />
-                Lượt mới
+                Quay tiếp
               </button>
             </div>
 
@@ -411,16 +411,17 @@ export default function Home() {
               <>
                 <div className="question-toolbar">
                   <div>
-                    <p className="eyebrow">Bước tiếp theo</p>
-                    <h3 id="question-title">Chọn 1 trong 10 gói câu hỏi</h3>
+                    <p className="eyebrow">Thử thách tiếp theo</p>
+                    <h3 id="question-title">Chọn một gói câu hỏi</h3>
+                    <span className="remaining-count">{availableQuestions.length} / {questions.length} gói còn lại</span>
                   </div>
                   <button
-                    className="secondary-action"
+                    className="secondary-action random-action"
                     disabled={availableQuestions.length === 0}
                     onClick={randomQuestion}
                   >
                     <Shuffle size={18} />
-                    {availableQuestions.length > 0 ? "Random gói" : "Hết gói"}
+                    {availableQuestions.length > 0 ? "Chọn ngẫu nhiên" : "Đã hết gói"}
                   </button>
                 </div>
 
@@ -431,7 +432,7 @@ export default function Home() {
 
                     return (
                       <button
-                        className={`question-card ${isOpened ? "opened" : ""}`}
+                        className={`question-card slot-${slotNumber} ${isOpened ? "opened" : ""}`}
                         disabled={!question || isOpened}
                         key={slotNumber}
                         onClick={() => pickQuestion(question)}
@@ -443,23 +444,38 @@ export default function Home() {
                               : question.prompt
                         }
                       >
-                        <span>Gói {slotNumber}</span>
-                        <strong>{question ? (isOpened ? "Đã mở" : "Mở câu hỏi") : "Chưa nhập"}</strong>
+                        <span className="package-topline">
+                          <span className="package-label">Gói câu hỏi</span>
+                          {isOpened ? <CheckCircle2 size={20} aria-hidden="true" /> : <ArrowUpRight size={20} aria-hidden="true" />}
+                        </span>
+                        <span className="package-number">{String(slotNumber).padStart(2, "0")}</span>
+                        <span className="package-state">{question ? (isOpened ? "Đã mở" : "Chọn gói") : "Chưa nhập"}</span>
                       </button>
                     );
                   })}
                 </div>
               </>
             ) : (
-              <article className="answer-board">
-                <button className="back-action" onClick={() => setSelectedQuestion(null)}>
-                  <ArrowLeft size={19} />
-                  Chọn gói khác
-                </button>
+              <article className="answer-board" key={selectedQuestion.id}>
+                <div className="question-topline">
+                  <button className="back-action" onClick={() => setSelectedQuestion(null)}>
+                    <ArrowLeft size={19} />
+                    Các gói câu hỏi
+                  </button>
+                  <span className="player-pill">{selectedEntry.name}</span>
+                  <button className="ghost-action compact" onClick={resetRound}>
+                    <RotateCcw size={19} />
+                    Quay tiếp
+                  </button>
+                </div>
 
-                <div className="question-copy">
-                  <span>{selectedQuestion.title}</span>
+                <div className="question-copy game-question">
+                  <div className="question-heading-row">
+                    <span className="question-badge">{selectedQuestion.title}</span>
+                    <span className="question-index">{String(selectedQuestion.id).padStart(2, "0")} / {questions.length}</span>
+                  </div>
                   <h3>{selectedQuestion.prompt}</h3>
+                  <p className="question-hint"><Sparkles size={15} aria-hidden="true" /> Chọn đáp án bạn cho là đúng</p>
                 </div>
 
                 <div className="answer-options">
@@ -475,12 +491,18 @@ export default function Home() {
                             "answer-option",
                             reveal && isCorrect ? "correct" : "",
                             reveal && isChosen && !isCorrect ? "wrong" : "",
+                            reveal && !isCorrect && !isChosen ? "dimmed" : "",
                           ].join(" ")}
                           key={key}
+                          disabled={reveal}
                           onClick={() => setChosenAnswer(key)}
                         >
-                          <span>{key}</span>
+                          <span className="answer-letter">{key}</span>
                           <strong>{selectedQuestion.options[key]}</strong>
+                          {reveal && isCorrect ? <CheckCircle2 className="answer-icon" size={26} /> : null}
+                          {reveal && isChosen && !isCorrect ? (
+                            <XCircle className="answer-icon" size={26} />
+                          ) : null}
                         </button>
                       );
                     },
@@ -488,8 +510,15 @@ export default function Home() {
                 </div>
 
                 {chosenAnswer ? (
-                  <div className="answer-result">
-                    Đáp án đúng: <strong>{selectedQuestion.answer}</strong>
+                  <div
+                    className={`answer-result ${
+                      chosenAnswer === selectedQuestion.answer ? "success" : "miss"
+                    }`}
+                    role="status"
+                  >
+                    {chosenAnswer === selectedQuestion.answer ? <CheckCircle2 size={26} aria-hidden="true" /> : <XCircle size={26} aria-hidden="true" />}
+                    <span>{chosenAnswer === selectedQuestion.answer ? "Chính xác!" : "Chưa chính xác"}</span>
+                    <strong>Đáp án: {selectedQuestion.answer}</strong>
                   </div>
                 ) : null}
               </article>
