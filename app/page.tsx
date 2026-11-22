@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowUpRight, CheckCircle2, RotateCcw, RotateCw, Shuffle, Sparkles, XCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle2, RotateCcw, RotateCw, Shuffle, Sparkles, XCircle } from "lucide-react";
 import { useState } from "react";
 
 type WheelEntry = {
@@ -412,8 +412,8 @@ export default function Home() {
                 <div className="question-toolbar">
                   <div>
                     <p className="eyebrow">Thử thách tiếp theo</p>
-                    <h3 id="question-title">Chọn một gói câu hỏi</h3>
-                    <span className="remaining-count">{availableQuestions.length} / {questions.length} gói còn lại</span>
+                    <h3 id="question-title">Chọn một hộp quà</h3>
+                    <span className="remaining-count">Mỗi hộp ẩn một câu hỏi · {availableQuestions.length} / {questions.length} hộp còn lại</span>
                   </div>
                   <button
                     className="secondary-action random-action"
@@ -421,7 +421,7 @@ export default function Home() {
                     onClick={randomQuestion}
                   >
                     <Shuffle size={18} />
-                    {availableQuestions.length > 0 ? "Chọn ngẫu nhiên" : "Đã hết gói"}
+                    {availableQuestions.length > 0 ? "Chọn ngẫu nhiên" : "Đã hết hộp"}
                   </button>
                 </div>
 
@@ -436,20 +436,17 @@ export default function Home() {
                         disabled={!question || isOpened}
                         key={slotNumber}
                         onClick={() => pickQuestion(question)}
-                        title={
-                          !question
-                            ? "Chưa có dữ liệu câu hỏi"
-                            : isOpened
-                              ? "Gói này đã được mở"
-                              : question.prompt
-                        }
+                        aria-label={`Hộp quà ${String(slotNumber).padStart(2, "0")}: ${!question ? "chưa có câu hỏi" : isOpened ? "đã mở" : "chọn để mở câu hỏi"}`}
                       >
-                        <span className="package-topline">
-                          <span className="package-label">Gói câu hỏi</span>
-                          {isOpened ? <CheckCircle2 size={20} aria-hidden="true" /> : <ArrowUpRight size={20} aria-hidden="true" />}
+                        <span className="gift-scene" aria-hidden="true">
+                          <span className="gift-bow"><span /><span /></span>
+                          <span className="gift-lid"><span className="gift-lid-ribbon" /></span>
+                          <span className="gift-box">
+                            <span className="gift-ribbon" />
+                            <span className="package-number">{String(slotNumber).padStart(2, "0")}</span>
+                          </span>
                         </span>
-                        <span className="package-number">{String(slotNumber).padStart(2, "0")}</span>
-                        <span className="package-state">{question ? (isOpened ? "Đã mở" : "Chọn gói") : "Chưa nhập"}</span>
+                        <span className="package-state">{isOpened ? <CheckCircle2 size={16} aria-hidden="true" /> : null}{question ? (isOpened ? "Đã mở" : "Mở hộp quà") : "Chưa nhập"}</span>
                       </button>
                     );
                   })}
@@ -460,7 +457,7 @@ export default function Home() {
                 <div className="question-topline">
                   <button className="back-action" onClick={() => setSelectedQuestion(null)}>
                     <ArrowLeft size={19} />
-                    Các gói câu hỏi
+                    Các hộp quà
                   </button>
                   <span className="player-pill">{selectedEntry.name}</span>
                   <button className="ghost-action compact" onClick={resetRound}>
